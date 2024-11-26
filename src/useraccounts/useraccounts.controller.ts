@@ -1,34 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { UseraccountsService } from './useraccounts.service';
-import { CreateUseraccountDto } from './dto/create-useraccount.dto';
-import { UpdateUseraccountDto } from './dto/update-useraccount.dto';
+import { Controller, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
+import { UserService } from './useraccounts.service';
 
-@Controller('useraccounts')
-export class UseraccountsController {
-  constructor(private readonly useraccountsService: UseraccountsService) {}
+@Controller('user')
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUseraccountDto: CreateUseraccountDto) {
-    return this.useraccountsService.create(createUseraccountDto);
+  @Post('register')
+  async register(@Body() body: { username: string; password: string }) {
+    if (!body.username || !body.password) {
+      throw new HttpException('Invalid input', HttpStatus.BAD_REQUEST);
+    }
+    return this.userService.register(body.username, body.password);
   }
 
-  @Get()
-  findAll() {
-    return this.useraccountsService.findAll();
-  }
+  @Post('login')
+  async login(@Body() body: { username: string; password: string }) {
+    if (!body.username || !body.password) {
+      throw new HttpException('Invalid input', HttpStatus.BAD_REQUEST);
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.useraccountsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUseraccountDto: UpdateUseraccountDto) {
-    return this.useraccountsService.update(+id, updateUseraccountDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.useraccountsService.remove(+id);
+    const isValid = await this.userService.validateUser(body.username, body.password);
+    if (isValid) {
+      return { message: 'Login successful' };
+    } else {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
   }
 }
