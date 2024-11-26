@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './useraccounts/useraccounts.module';
 import { Useraccount } from './useraccounts/entities/useraccount.entity';
+import { Goodsupload } from './goodsuploads/entities/goodsupload.entity';
 
 @Module({
   imports: [
@@ -11,8 +12,8 @@ import { Useraccount } from './useraccounts/entities/useraccount.entity';
       port: 3306,
       username: 'root',
       password: '', 
-      database: 'testdb', 
-      entities: [Useraccount],
+      database: 'farmersdirect', 
+      entities: [Useraccount,Goodsupload],
       synchronize: true,
     }),
     UserModule,
