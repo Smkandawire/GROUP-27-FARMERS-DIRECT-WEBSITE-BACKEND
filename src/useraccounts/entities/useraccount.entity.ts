@@ -1,1 +1,13 @@
-export class Useraccount {}
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
+@Entity()
+export class Useraccount {
+    @PrimaryGeneratedColumn()
+    id: number;
+  
+    @Column({ unique: true })
+    username: string;
+  
+    @Column()
+    password: string; 
+}

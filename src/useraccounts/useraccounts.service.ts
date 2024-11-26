@@ -1,26 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUseraccountDto } from './dto/create-useraccount.dto';
-import { UpdateUseraccountDto } from './dto/update-useraccount.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Useraccount } from './entities/useraccount.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class UseraccountsService {
-  create(createUseraccountDto: CreateUseraccountDto) {
-    return 'This action adds a new useraccount';
+export class UserService {
+  constructor(
+    @InjectRepository(Useraccount)
+    private userRepository: Repository<Useraccount>,
+  ) {}
+
+  async register(username: string, password: string): Promise<string> {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = this.userRepository.create({ username, password: hashedPassword });
+    await this.userRepository.save(user);
+    return 'User registered successfully';
   }
 
-  findAll() {
-    return `This action returns all useraccounts`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} useraccount`;
-  }
-
-  update(id: number, updateUseraccountDto: UpdateUseraccountDto) {
-    return `This action updates a #${id} useraccount`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} useraccount`;
+  async validateUser(username: string, password: string): Promise<boolean> {
+    const user = await this.userRepository.findOne({ where: { username } });
+    if (user && (await bcrypt.compare(password, user.password))) {
+      return true;
+    }
+    return false;
   }
 }
