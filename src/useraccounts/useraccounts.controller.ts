@@ -5,7 +5,7 @@ import { UserService } from './useraccounts.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post('register')
+  @Post('signup')
   async register(@Body() body: { username: string; password: string }) {
     if (!body.username || !body.password) {
       throw new HttpException('Invalid input', HttpStatus.BAD_REQUEST);
