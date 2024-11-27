@@ -19,16 +19,16 @@ export class PaymentsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.paymentsService.findOne(+id);
+    return this.paymentsService.findOne(id); // Pass id directly as a string
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePaymentDto: UpdatePaymentDto) {
-    return this.paymentsService.update(+id, updatePaymentDto);
+    return this.paymentsService.update(id, updatePaymentDto); // Pass id directly as a string
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.paymentsService.remove(+id);
+    return this.paymentsService.remove(id); // Pass id directly as a string
   }
 }
