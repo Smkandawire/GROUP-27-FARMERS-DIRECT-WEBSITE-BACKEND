@@ -1,26 +1,37 @@
 import { Injectable } from '@nestjs/common';
 import { CreateGoodsuploadDto } from './dto/create-goodsupload.dto';
 import { UpdateGoodsuploadDto } from './dto/update-goodsupload.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Goodsupload } from './entities/goodsupload.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class GoodsuploadsService {
-  create(createGoodsuploadDto: CreateGoodsuploadDto) {
-    return 'This action adds a new goodsupload';
-  }
 
-  findAll() {
-    return `This action returns all goodsuploads`;
-  }
+  constructor(
 
-  findOne(id: number) {
-    return `This action returns a #${id} goodsupload`;
-  }
+    @InjectRepository(Goodsupload) private readonly goodsUploadRepository:Repository<Goodsupload>
+  ){}
 
-  update(id: number, updateGoodsuploadDto: UpdateGoodsuploadDto) {
-    return `This action updates a #${id} goodsupload`;
-  }
+  async createGoodsupload(goodsupload:Goodsupload){
 
-  remove(id: number) {
-    return `This action removes a #${id} goodsupload`;
-  }
+    return await this.goodsUploadRepository.save(goodsupload)
+ }
+
+ async findAllGoodsUploads():Promise<Goodsupload[]>{
+
+  return await this.goodsUploadRepository.find()
+ }
+
+ async updateGoodsUpload(id: number,updateData: Partial<Goodsupload> ):Promise<Goodsupload>{
+
+  await this.goodsUploadRepository.update(id,updateData)
+
+  return await this.goodsUploadRepository.findOneBy({id})
+
+ }
+ async removeGoodsUpload(id: number):Promise<void>{
+  await this.goodsUploadRepository.delete(id)
+ }
+
 }
