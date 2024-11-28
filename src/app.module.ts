@@ -4,6 +4,8 @@ import { UserModule } from './useraccounts/useraccounts.module';
 import { Useraccount } from './useraccounts/entities/useraccount.entity';
 import { Goodsupload } from './goodsuploads/entities/goodsupload.entity';
 import { GoodsuploadsModule } from './goodsuploads/goodsuploads.module';
+import { Payment } from './payments/entities/payment.entity';
+
 
 @Module({
   imports: [
@@ -14,8 +16,10 @@ import { GoodsuploadsModule } from './goodsuploads/goodsuploads.module';
       username: 'root',
       password: '', 
       database: 'farmersdirect', 
-      entities: [Useraccount,Goodsupload],
+      entities: [Useraccount,Goodsupload,Payment],
       synchronize: true,
+      retryAttempts: 5,
+      retryDelay: 3000, 
     }),
     UserModule,
     GoodsuploadsModule
