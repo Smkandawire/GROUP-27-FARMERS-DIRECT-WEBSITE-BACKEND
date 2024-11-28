@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { farmersdirectuseraccount } from './entities/useraccount.entity';
+import { Useraccount } from './entities/useraccount.entity';
 import * as bcrypt from 'bcrypt';
 import { LoginItem, signupitem } from './interface/signupitems';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(farmersdirectuseraccount)
-    private userRepository: Repository<farmersdirectuseraccount>,
+    @InjectRepository(Useraccount)
+    private userRepository: Repository<Useraccount>,
   ) {}
 
   // Register function to use SignupItem interface
