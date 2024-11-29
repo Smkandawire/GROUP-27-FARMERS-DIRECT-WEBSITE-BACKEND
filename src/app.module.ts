@@ -18,9 +18,11 @@ import { Payment } from './payments/entities/payment.entity';
       database: 'farmersdirect', 
       entities: [Useraccount,Goodsupload,Payment],
       synchronize: true,
-      retryAttempts: 5,
+      logging:true,
+      retryAttempts: 3,
       retryDelay: 3000, 
     }),
+    
     UserModule,
     GoodsuploadsModule
    
