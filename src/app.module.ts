@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './useraccounts/useraccounts.module';
-
+import { Useraccount } from './useraccounts/entities/useraccount.entity';
 import { Goodsupload } from './goodsuploads/entities/goodsupload.entity';
-import { Service } from './services/entities/service.entity';
-import { farmersdirectuseraccount } from './useraccounts/entities/useraccount.entity';
+import { GoodsuploadsModule } from './goodsuploads/goodsuploads.module';
+import { Payment } from './payments/entities/payment.entity';
+
 
 @Module({
   imports: [
@@ -15,10 +16,16 @@ import { farmersdirectuseraccount } from './useraccounts/entities/useraccount.en
       username: 'root',
       password: '', 
       database: 'farmersdirect', 
-      entities: [farmersdirectuseraccount,Goodsupload,Service],
+      entities: [Useraccount,Goodsupload,Payment],
       synchronize: true,
+      logging:true,
+      retryAttempts: 3,
+      retryDelay: 3000, 
     }),
+    
     UserModule,
+    GoodsuploadsModule
+   
   ],
 })
 export class AppModule {}
